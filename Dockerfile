@@ -7,6 +7,7 @@ ENV OC_RELEASE "openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit"
 
 # install the oc client tools
 ADD https://github.com/openshift/origin/releases/download/$OC_VERSION/$OC_RELEASE.tar.gz /opt/oc/release.tar.gz
+RUN ls -la /opt/oc
 RUN tar -xzvf release.tar.gz && \
     mv /opt/oc/$OC_RELEASE/oc /usr/bin/ && \
     rm -rf /opt/oc
