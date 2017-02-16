@@ -1,13 +1,10 @@
-# etxend the node LTS alpine base image
-FROM node:6.9-alpine
+# etxend the docker 1.13 image
+FROM docker:1.13
 
-# specify the version of yarn to be installed
-ENV YARN_VERSION 0.20.3
+# specify the version string of the oc release
+ENV OC_VERSION "v1.4.1"
+ENV OC_RELEASE "openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit"
 
-# install yarn
-ADD https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v${YARN_VERSION}.tar.gz /opt/yarn.tar.gz
-RUN yarnDirectory=/opt/yarn && \
-    mkdir -p "$yarnDirectory" && \
-    tar -xzf /opt/yarn.tar.gz -C "$yarnDirectory" && \
-    ln -s "$yarnDirectory/dist/bin/yarn" /usr/local/bin/ && \
-    rm /opt/yarn.tar.gz
+# install the oc client tools
+ADD https://github.com/openshift/origin/releases/download/$OC_VERSION/$OC_RELEASE.tar.gz /opt/oc/
+RUN pwd && ls -la
