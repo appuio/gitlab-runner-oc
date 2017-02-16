@@ -2,7 +2,7 @@
 FROM node:6.9-alpine
 
 # specify the version of yarn to be installed
-ENV YARN_VERSION 0.20.0
+ENV YARN_VERSION 0.20.3
 
 # install yarn
 ADD https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v${YARN_VERSION}.tar.gz /opt/yarn.tar.gz
