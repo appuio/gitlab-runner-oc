@@ -34,3 +34,6 @@ RUN set -x \
     && tar --strip-components=1 -xzvf /tmp/release.tar.gz -C /tmp/ \
     && mv /tmp/oc /usr/local/bin/ \
     && rm -rf /tmp/*
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["sh"]
