@@ -1,7 +1,7 @@
 # etxend an alpine image with installed glibc
 # necessary due to https://github.com/openshift/origin/issues/11135
 # TODO: replace with the simpler Dockerfile once resolved
-FROM frolvlad/alpine-glibc:alpine-3.5
+FROM ubuntu:16.10
 
 # specify versions for docker and the oc release
 ENV DOCKER_BUCKET get.docker.com
@@ -11,14 +11,15 @@ ENV OC_VERSION v1.4.1
 ENV OC_RELEASE openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit
 
 # install necessary alpine packages
-RUN apk add --no-cache \
+RUN apt-get update && \
+	apt-get install -yq \
 		ca-certificates \
 		curl \
 		openssl
 
 # install docker
-RUN set -x \
-	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+RUN set -x && \
+	curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
 	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
 	&& tar -xzvf docker.tgz \
 	&& mv docker/* /usr/local/bin/ \
