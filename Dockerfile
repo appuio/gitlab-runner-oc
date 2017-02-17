@@ -25,12 +25,12 @@ RUN set -x \
 	&& rmdir docker \
 	&& rm docker.tgz
 
+# copy the docker entrypoint inside the image
+COPY docker-entrypoint.sh /usr/local/bin/
+
 # install the oc client tools
 RUN set -x \
     && curl -fSL "https://github.com/openshift/origin/releases/download/${OC_VERSION}/${OC_RELEASE}.tar.gz" -o /tmp/release.tar.gz \
     && tar --strip-components=1 -xzvf /tmp/release.tar.gz -C /tmp/ \
     && mv /tmp/oc /usr/local/bin/ \
     && rm -rf /tmp/*
-
-# override the default docker entrypoint
-ENTRYPOINT "sh"
