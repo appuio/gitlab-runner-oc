@@ -1,24 +1,20 @@
-# etxend an alpine image with installed glibc
-# necessary due to https://github.com/openshift/origin/issues/11135
-# TODO: replace with the simpler Dockerfile once resolved
+# etxend an ubuntu base image
 FROM ubuntu:16.10
 
 # specify versions for docker and the oc release
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.13.1
 ENV DOCKER_SHA256 97892375e756fd29a304bd8cd9ffb256c2e7c8fd759e12a55a6336e15100ad75
-ENV OC_VERSION v1.4.1
-ENV OC_RELEASE openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit
-
-# copy the docker entrypoint inside the image
-# COPY docker-entrypoint.sh /usr/local/bin/
+ENV OC_VERSION v1.3.3
+ENV OC_RELEASE openshift-origin-client-tools-v1.3.3-bc17c1527938fa03b719e1a117d584442e3727b8-linux-64bit
 
 # install necessary packages
 RUN apt-get update && \
 	apt-get install -yq \
 		ca-certificates \
 		curl \
-		openssl
+		openssl \
+	&& rm -rf /var/lib/apt/lists/*
 
 # install docker
 RUN set -x && \
