@@ -1,12 +1,5 @@
-# etxend the docker 1.13 image
-FROM docker:1.13
+# etxend the official OpenShift origin image
+FROM openshift/origin:v1.4.1
 
-# specify the version string of the oc release
-ENV OC_VERSION "v1.4.1"
-ENV OC_RELEASE "openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit"
-
-# install the oc client tools
-ADD https://github.com/openshift/origin/releases/download/$OC_VERSION/$OC_RELEASE.tar.gz /opt/oc/release.tar.gz
-RUN tar --strip-components=1 -xzvf  /opt/oc/release.tar.gz -C /opt/oc/ && \
-    mv /opt/oc/oc /usr/local/bin/ && \
-    rm -rf /opt/oc
+# override the entrypoint as we won't need to execute openshift'
+ENTRYPOINT "bash"
