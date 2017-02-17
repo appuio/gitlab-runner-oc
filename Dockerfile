@@ -1,12 +1,36 @@
-# etxend the docker 1.13 image
-FROM docker:1.13
+# etxend an alpine image with installed glibc
+# necessary due to https://github.com/openshift/origin/issues/11135
+# TODO: replace with the simpler Dockerfile once resolved
+FROM frolvlad/alpine-glibc:alpine-3.5
 
-# specify the version string of the oc release
-ENV OC_VERSION "v1.4.1"
-ENV OC_RELEASE "openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit"
+# specify versions for docker and the oc release
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 1.13.1
+ENV DOCKER_SHA256 97892375e756fd29a304bd8cd9ffb256c2e7c8fd759e12a55a6336e15100ad75
+ENV OC_VERSION v1.4.1
+ENV OC_RELEASE openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit
+
+# install necessary alpine packages
+RUN apk add --no-cache \
+		ca-certificates \
+		curl \
+		openssl
+
+# install docker
+RUN set -x \
+	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+	&& tar -xzvf docker.tgz \
+	&& mv docker/* /usr/local/bin/ \
+	&& rmdir docker \
+	&& rm docker.tgz
 
 # install the oc client tools
-ADD https://github.com/openshift/origin/releases/download/$OC_VERSION/$OC_RELEASE.tar.gz /opt/oc/release.tar.gz
-RUN tar --strip-components=1 -xzvf  /opt/oc/release.tar.gz -C /opt/oc/ && \
-    mv /opt/oc/oc /usr/local/bin/ && \
-    rm -rf /opt/oc
+RUN set -x \
+    && curl -fSL "https://github.com/openshift/origin/releases/download/${OC_VERSION}/${OC_RELEASE}.tar.gz" -o /tmp/release.tar.gz \
+    && tar --strip-components=1 -xzvf /tmp/release.tar.gz -C /tmp/ \
+    && mv /tmp/oc /usr/local/bin/ \
+    && rm -rf /tmp/*
+
+# override the default docker entrypoint
+ENTRYPOINT "sh"
