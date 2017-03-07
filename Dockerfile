@@ -23,7 +23,7 @@ RUN set -x && \
 	curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz && \
 	echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - && \
 	tar -xzvf docker.tgz && \
-	curl -fSL "https://raw.githubusercontent.com/docker-library/docker/master/${DOCKER_SHORT}/docker-entrypoint.sh" -o docker/docker-entrypoint.sh && \
+	curl -fSL "https://raw.githubusercontent.com/docker-library/docker/master/${DOCKER_RELEASE}/docker-entrypoint.sh" -o docker/docker-entrypoint.sh && \
 	chmod +x docker/docker-entrypoint.sh && \
 	mv docker/* /usr/local/bin/ && \
 	rmdir docker && \
