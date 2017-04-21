@@ -1,5 +1,5 @@
 # etxend an ubuntu base image
-FROM ubuntu:16.10
+FROM ubuntu:16.04
 
 # install necessary packages
 RUN apt-get update && \
@@ -11,12 +11,12 @@ RUN apt-get update && \
 	
 # specify versions for docker and the oc release
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_RELEASE 17.03
-ENV DOCKER_VERSION 17.03.0-ce
+ENV DOCKER_RELEASE 17.04
+ENV DOCKER_VERSION 17.04.0-ce
 ENV DOCKER_SHA256 4a9766d99c6818b2d54dc302db3c9f7b352ad0a80a2dc179ec164a3ba29c2d3e
 
-ENV OC_RELEASE openshift-origin-client-tools-v1.3.3-bc17c1527938fa03b719e1a117d584442e3727b8-linux-64bit
-ENV OC_VERSION v1.3.3
+ENV OC_RELEASE openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit
+ENV OC_VERSION v1.4.1
 
 # install docker
 RUN set -x && \
