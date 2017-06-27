@@ -15,8 +15,8 @@ ENV DOCKER_RELEASE 17.04
 ENV DOCKER_VERSION 17.04.0-ce
 ENV DOCKER_SHA256 c52cff62c4368a978b52e3d03819054d87bcd00d15514934ce2e0e09b99dd100
 
-ENV OC_RELEASE openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit
-ENV OC_VERSION v1.4.1
+ENV OC_RELEASE openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit
+ENV OC_VERSION v1.5.1
 
 # install docker
 RUN set -x && \
