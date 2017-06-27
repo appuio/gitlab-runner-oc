@@ -7,6 +7,7 @@ RUN apt-get update && \
 		ca-certificates \
 		curl \
 		openssl \
+		gettext-base \
 	&& rm -rf /var/lib/apt/lists/*
 	
 # specify versions for docker and the oc release
