@@ -3,8 +3,8 @@ FROM ubuntu:16.04
 
 # specify versions for docker and the oc release
 ENV DOCKER_VERSION=18.06.1~ce~3-0~ubuntu \
-	OC_RELEASE=openshift-origin-client-tools-v3.6.1-008f2d5-linux-64bit \
-	OC_VERSION=v3.6.1
+	OC_RELEASE=openshift-origin-client-tools-v3.7.2-282e43f-linux-64bit \
+	OC_VERSION=v3.7.2
 
 # install necessary packages
 RUN apt-get update && \
