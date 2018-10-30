@@ -1,6 +1,11 @@
 # etxend an ubuntu base image
 FROM ubuntu:16.04
 
+# specify versions for docker and the oc release
+ENV DOCKER_VERSION=18.06.1~ce~3-0~ubuntu \
+	OC_RELEASE=openshift-origin-client-tools-v3.6.1-008f2d5-linux-64bit \
+	OC_VERSION=v3.6.1
+
 # install necessary packages
 RUN apt-get update && \
 	apt-get install -yq \
@@ -8,27 +13,17 @@ RUN apt-get update && \
 		curl \
 		openssl \
 		gettext-base \
-	&& rm -rf /var/lib/apt/lists/*
-	
-# specify versions for docker and the oc release
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_RELEASE 17.05
-ENV DOCKER_VERSION 17.05.0-ce
-ENV DOCKER_SHA256 340e0b5a009ba70e1b644136b94d13824db0aeb52e09071410f35a95d94316d9
-
-ENV OC_RELEASE openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit
-ENV OC_VERSION v1.5.1
-
-# install docker
-RUN set -x && \
-	curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz && \
-	echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - && \
-	tar -xzvf docker.tgz && \
-	curl -fSL "https://raw.githubusercontent.com/docker-library/docker/master/${DOCKER_RELEASE}/docker-entrypoint.sh" -o docker/docker-entrypoint.sh && \
-	chmod +x docker/docker-entrypoint.sh && \
-	mv docker/* /usr/local/bin/ && \
-	rmdir docker && \
-	rm docker.tgz
+		apt-transport-https \
+		software-properties-common && \
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+	add-apt-repository \
+		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+		$(lsb_release -cs) \
+		stable" && \
+	apt-get update && \
+	apt-get install -yq \
+		docker-ce=${DOCKER_VERSION} && \
+	rm -rf /var/lib/apt/lists/*
 
 # install the oc client tools
 RUN set -x && \
@@ -36,6 +31,8 @@ RUN set -x && \
     tar --strip-components=1 -xzvf /tmp/release.tar.gz -C /tmp/ && \
     mv /tmp/oc /usr/local/bin/ && \
     rm -rf /tmp/*
+
+COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["bash"]
