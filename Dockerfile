@@ -1,5 +1,5 @@
 # etxend an ubuntu base image
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 
 # specify versions for docker and the oc release
 ENV DOCKER_VERSION=18.06.1~ce~3-0~ubuntu \
