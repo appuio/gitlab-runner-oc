@@ -1,5 +1,5 @@
 # etxend an ubuntu base image
-FROM ubuntu:16.04
+FROM docker.io/ubuntu:18.04@sha256:134c7fe821b9d359490cd009ce7ca322453f4f2d018623f849e580a89a685e5d
 
 # specify versions for docker and the oc release
 ENV DOCKER_VERSION=18.06.1~ce~3-0~ubuntu \
